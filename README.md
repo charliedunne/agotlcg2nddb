@@ -3,4 +3,5 @@
 ## Needs:
 python3-django
 python3-djangorestframework
+sqlite3
 
