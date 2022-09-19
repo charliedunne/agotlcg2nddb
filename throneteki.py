@@ -1,12 +1,7 @@
 from db import models
 
-import json
 import os
-
-##
-# To run use python manage.py shell < script
-
-# Access to the DB: models.Cycle.objects.all()
+import json
 # delete: models.Cycle.objecs.all().delete()
 
 # Languages 
@@ -279,33 +274,6 @@ for trait in traits:
         else:        
             print('Bypassing "' + temp.name + '". ERROR: ' + str(e))
 
-# Traits translation
-print("\nRunning TraitsTranslation:")
-print("..................................\n")
-path = "../translations-json-data/translations/"
-dirs = os.listdir(path)
-
-# Manage each language translation
-#for lang in dirs:
-for lang in ['es']:
-    dirPacks = os.listdir(path + lang + '/pack/')
-
-    for pack in dirPacks:
-        print(pack)
-        f = open(path + lang + '/pack/' + pack)
-        translate_pack_data = json.load(f)
-
-        for i in translate_pack_data:
-
-            # For each card find traits
-            traits = list(filter(None, i['traits'].split('.')))
-
-            orTraits = models.Card.objects.get(code=i['code']).traits.all()
-            counter = 0
-            for t in traits:
-                print(t.lstrip() + "=> " + orTraits[counter].name)
-                counter = counter + 1
-
 # Types
 print("\nRunning types")
 print("..................................\n")
@@ -415,3 +383,51 @@ for filename in dirs:
 
  
 
+# Traits translation
+print("\nRunning TraitsTranslation:")
+print("..................................\n")
+path = "../translations-json-data/translations/"
+dirs = os.listdir(path)
+
+# Manage each language translation
+for lang in dirs:
+#for lang in ['es']:
+    dirPacks = os.listdir(path + lang + '/pack/')
+
+    # Find Language in DB
+    lg = models.Language.objects.all().get(short=lang)
+
+    for pack in dirPacks:
+        f = open(path + lang + '/pack/' + pack)
+        translate_pack_data = json.load(f)
+
+        for i in translate_pack_data:
+            
+            # Extract the traits from the translation
+            traits = list(filter(None, i['traits'].split('.')))
+
+            # Find the same traits in DB
+            orTraits = models.Card.objects.get(code=i['code']).traits.all()
+
+            
+            if len(orTraits) == 1:
+                # print(traits[0].lstrip() + "=> " + orTraits[0].name)
+
+                # Trait object (many2many relationship)
+                row = models.Trait.objects.get(name=orTraits[0].name)
+
+                # Row to be inserted in DB (if no duplicates already)
+                temp = models.TranslateTrait(trait=row, language=lg, name=traits[0].lstrip())
+
+                # Find duplicates
+                duplicates = models.TranslateTrait.objects.all().filter(trait=row, language=lg, name=traits[0].lstrip())
+
+                if len(duplicates) == 0:
+                    try:
+                        temp.save()
+                        print('Saving "' + orTraits[0].name + '" => "' +  traits[0].lstrip() + '" Trait')
+                    except Exception as e:
+                        if 'UNIQUE' in str(e):
+                            pass
+                        else:          
+                            print('Bypass "'  + orTraits[0].name + '" => "' +   traits[0].lstrip() + '". ERROR: ' + str(e))  
