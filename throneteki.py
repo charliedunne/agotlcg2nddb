@@ -431,3 +431,43 @@ for lang in dirs:
                             pass
                         else:          
                             print('Bypass "'  + orTraits[0].name + '" => "' +   traits[0].lstrip() + '". ERROR: ' + str(e))  
+
+
+# Cards translation
+print("\nRunning CardsTranslation:")
+print("..................................\n")
+path = "../translations-json-data/translations/"
+dirs = os.listdir(path)
+
+# Manage each language translation
+for lang in dirs:
+#for lang in ['es']:
+    dirPacks = os.listdir(path + lang + '/pack/')
+
+    # Find Language in DB
+    lg = models.Language.objects.all().get(short=lang)
+
+    for pack in dirPacks:
+        f = open(path + lang + '/pack/' + pack)
+        translate_pack_data = json.load(f)
+
+        for card in translate_pack_data:
+            
+            # Card object 
+            row = models.Card.objects.get(code=card['code'])
+
+            # Row to be inserted in DB (if no duplicates already)
+            temp = models.TranslateCard(card=row, language=lg, name=card['name'], text=card['text'], flavor=card['flavor'])
+
+            # Find duplicates
+            duplicates = models.TranslateCard.objects.all().filter(card=row, language=lg, name=card['name'])
+
+            if len(duplicates) == 0:
+                try:
+                    temp.save()
+                    print('Saving "' + card['name'] + '" Card')
+                except Exception as e:
+                    if 'UNIQUE' in str(e):
+                        pass
+                    else:          
+                        print('Bypass "'  + card['name'] + '" Card. ERROR: ' + str(e))  
