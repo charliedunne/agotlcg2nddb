@@ -405,13 +405,12 @@ for lang in dirs:
             
             # Extract the traits from the translation
             traits = list(filter(None, i['traits'].split('.')))
-
+           
             # Find the same traits in DB
             orTraits = models.Card.objects.get(code=i['code']).traits.all()
 
-            
-            if len(orTraits) == 1:
-                # print(traits[0].lstrip() + "=> " + orTraits[0].name)
+            if (len(orTraits) == 1) and (i['traits'] != ""):
+                # print(pack + ". => " + traits[0].lstrip() + "=> " + orTraits[0].name)
 
                 # Trait object (many2many relationship)
                 row = models.Trait.objects.get(name=orTraits[0].name)
@@ -452,22 +451,24 @@ for lang in dirs:
         translate_pack_data = json.load(f)
 
         for card in translate_pack_data:
-            
             # Card object 
             row = models.Card.objects.get(code=card['code'])
 
-            # Row to be inserted in DB (if no duplicates already)
-            temp = models.TranslateCard(card=row, language=lg, name=card['name'], text=card['text'], flavor=card['flavor'])
+            if ('text' in card):
+                # Row to be inserted in DB (if no duplicates already)
+                temp = models.TranslateCard(card=row, language=lg, name=card['name'], text=card['text'], flavor=card['flavor'])
 
-            # Find duplicates
-            duplicates = models.TranslateCard.objects.all().filter(card=row, language=lg, name=card['name'])
+                # Find duplicates
+                duplicates = models.TranslateCard.objects.all().filter(card=row, language=lg, name=card['name'])
 
-            if len(duplicates) == 0:
-                try:
-                    temp.save()
-                    print('Saving "' + card['name'] + '" Card')
-                except Exception as e:
-                    if 'UNIQUE' in str(e):
-                        pass
-                    else:          
-                        print('Bypass "'  + card['name'] + '" Card. ERROR: ' + str(e))  
+                if len(duplicates) == 0:
+                    try:
+                        temp.save()
+                        print('Saving "' + card['name'] + '" Card')
+                    except Exception as e:
+                        if 'UNIQUE' in str(e):
+                            pass
+                        else:          
+                            print('Bypass "'  + card['name'] + '" Card. ERROR: ' + str(e))  
+            else:
+                print("WARNING, for lang " + lang + ", pack " + pack + ", code " + card['code'] + ". There is no 'text' field")
