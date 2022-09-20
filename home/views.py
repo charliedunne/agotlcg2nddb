@@ -1,13 +1,19 @@
 from django.shortcuts import render
 
 # Django views
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
+
+from db import models
 
 # Time tools
 from datetime import datetime
 
+from db.models import Card
+
 # Create your views here.
 
-class HomeView(TemplateView):
-    template_name = 'home/home.html'
-    extra_context = {'today': datetime.today()}
+def all_cards(request):
+    card_list = models.Card.objects.all()
+    return render(request, 'home/home.html', {'card_list': card_list})
+
+

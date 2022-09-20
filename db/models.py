@@ -1,4 +1,9 @@
+from atexit import register
 from django.db import models
+
+from django import template
+
+register = template.Library()
 
 # Serializers
 from rest_framework import serializers
@@ -63,6 +68,38 @@ class Card(models.Model):
 
     def __str__(self):
         return self.code
+
+    def getName_es(self):
+        lg = Language.objects.all().get(short='es')
+        try:
+            translation = TranslateCard.objects.all().get(card=self, language=lg)
+        except:
+            pass
+
+        if 'translation' in locals():
+            name = translation.name
+        else:
+            name = self.name + '*'
+
+        return name
+
+    def getName(self, lang):
+        try:
+            lg = Language.objects.all().get(short=lang)
+            translation = TranslateCard.objects.all().get(card=self, language=lg)
+        except:
+            pass
+
+        if translation is not None:
+            name = translation.name
+        else:
+            name = self.name
+
+        return name
+
+    @register.simple_tag
+    def theName(card, lang):
+        return Card.getName(lang)
 
 class Language(models.Model):
     short = models.CharField(max_length=2, unique=True)
