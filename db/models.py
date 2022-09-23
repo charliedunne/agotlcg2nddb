@@ -8,6 +8,24 @@ register = template.Library()
 # Serializers
 from rest_framework import serializers
 
+# Translation for Type
+def type_es(name):
+    match name:
+        case "Character":
+            return "Personaje"
+        case "Event":
+            return "Evento"
+        case "Attachment":
+            return "Accesorio"
+        case "Plot":
+            return "Trama"
+        case "Location":
+            return "Localización"
+        case "Title":
+            return "Título"
+        case _:
+            return name
+
 # Create your models here.
 class Cycle(models.Model):
     short = models.CharField(max_length=10, unique=True)
@@ -68,6 +86,44 @@ class Card(models.Model):
 
     def __str__(self):
         return self.code
+
+    def getTraits_es(self):
+        lg = Language.objects.all().get(short='es')
+        
+        outString = ""
+
+        for trait in self.traits.all():
+            try:
+                translation = TranslateTrait.objects.all().get(trait=trait, language=lg)
+            except:
+                pass
+
+            if 'translation' in locals():
+                outString = outString + translation.name + ". "
+            else:
+                outString = outString + trait.name + ". "
+
+        return outString
+
+    def getFaction_es(self):
+        lg = Language.objects.all().get(short='es')
+        translation = TranslateFaction.objects.all().get(faction=self.faction, language=lg)
+   
+        return translation.name
+
+    def getLoyal_es(self):
+
+        if self.loyal == True:
+            return "Leal"
+        else:
+            return "No Leal"
+
+    def getType_es(self):
+
+        return type_es(self.type.name)
+
+    def getFactionCode(self):
+        return self.faction
 
     def getName_es(self):
         lg = Language.objects.all().get(short='es')
@@ -149,3 +205,4 @@ class TranslateCycle(models.Model):
 
     def __str__(self):
         return self.name           
+

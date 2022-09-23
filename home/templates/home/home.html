@@ -6,16 +6,21 @@
 
 {% for card in card_list %}
 
+
+<!--
 <div class="row container-fluid">
     <div class="border col px-0 bg-light" >
         <div class="contianer-fluid px-2" style="background-color: rgb(197, 49, 49); color: rgb(255, 255, 255);">
-            <h2>{{ card.getName_es }} [{{ card.code }}]</h2>
+            <h2>{{ card.getName_es }} <span id="code">[{{ card.code }}]</span></h2>
         </div>
         <div class="px-3 my-0 py-0">
-            <p class="my-0">Cost: 6, STR: 3</p>
-            <p class="my-0">keywords</p>
-            <p class="my-3">text</p>
-
+            <p class="my-0">{{ card.getFaction_es }}. {{ card.getLoyal_es }}.</p>
+            <p class="my-0">{{ card.getType_es }}. Cost: {{ card.cost }}. FUE: {{ card.strenght }}. {{ card.getIcons }}</p>
+            <p class="my-0">{{ card.getTraits_es }}</p>
+            <div class="px-3 my-0 py-0">
+                <p class="my-0">keywords</p>
+                <p class="my-3">text</p>
+            </div>
         </div>
     </div>
 
@@ -23,6 +28,7 @@
         <img src="images/sample.svg" class="card-img-top" alt="...">
     </div>
 </div>
+-->
 
 {% endfor %}
 

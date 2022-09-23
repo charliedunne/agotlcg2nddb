@@ -17,3 +17,8 @@ def all_cards(request):
     return render(request, 'home/home.html', {'card_list': card_list})
 
 
+def card(request, code):
+    card = models.Card.objects.all().get(code=code)
+    return render(request, 'home/card.html', {'card': card})
+
+
