@@ -1,0 +1,31 @@
+:root {
+    --faction_color_bg: {{FACTION_COLOR_BG}};
+    --faction_color_fg: {{FACTION_COLOR_FG}};
+}
+
+.flavor {
+    font-size: medium;
+    font-family: cursive;
+}
+
+.cardtext {
+    font-family:Verdana;
+    border-left:4px solid var(--faction_color_bg);
+}
+
+.stats {
+    font-family:'Courier New', Courier, monospace;
+}
+
+.cardtitle {
+    background-color: var(--faction_color_bg);
+    color: var(--faction_color_fg)
+
+}
+
+.cardcode {
+    font-size: small;
+    font-family:'Courier New', Courier, monospace;
+    text-align: right;
+    vertical-align: middle;
+}
