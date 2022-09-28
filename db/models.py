@@ -68,6 +68,7 @@ class Card(models.Model):
     quantity = models.PositiveIntegerField()
     unique = models.BooleanField()
     faction = models.ForeignKey(Faction, on_delete=models.CASCADE)
+    pack = models.ForeignKey(Pack, on_delete=models.CASCADE)
     loyal = models.BooleanField()
     cost = models.CharField(max_length=2, blank=True, null=True)
     iMilitary = models.BooleanField(blank=True, null=True)
@@ -129,7 +130,7 @@ class Card(models.Model):
             case "stark":
                 return "black"
             case "neutral":
-                return "black"
+                return "white"
             case _:
                 return ""
 
@@ -245,6 +246,20 @@ class Card(models.Model):
             flavor = self.name + '*'
 
         return flavor 
+    
+    def getPack_es(self):
+        lg = Language.objects.all().get(short='es')
+        try:
+            translation = TranslatePack.objects.all().get(pack=self.pack, language=lg)
+        except:
+            pass
+
+        if 'translation' in locals():
+            pack = translation.name
+        else:
+            pack = self.pack.name
+
+        return pack + "#" + self.code             
 
     @register.simple_tag
     def theName(card, lang):

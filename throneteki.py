@@ -343,6 +343,7 @@ for filename in dirs:
         # References to other Tables
         rTypeId = models.Type.objects.all().get(name=card['type'].capitalize())
         rFactionId = models.Faction.objects.all().get(short=card['faction'])
+        rPack = models.Pack.objects.all().get(short=data_pack['code'])
 
         temp = models.Card(
             code=card['code'],
@@ -351,6 +352,7 @@ for filename in dirs:
             quantity=card['quantity'],
             unique=cUnique,
             faction=rFactionId,
+            pack=rPack,
             loyal=cLoyal,
             cost=cCost,
             iMilitary=cMilitary,
