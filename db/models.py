@@ -259,7 +259,7 @@ class Card(models.Model):
         else:
             pack = self.pack.name
 
-        return pack + "#" + self.code             
+        return pack + "#" + str(int(self.code[2:]))
 
     @register.simple_tag
     def theName(card, lang):
