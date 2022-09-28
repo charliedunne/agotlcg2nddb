@@ -1,0 +1,166 @@
+<!-- {% extends "base.html" %} 
+
+
+{% block content %}
+-->
+<style>
+    :root {
+        --baratheon_bg: rgb(196, 167, 25);
+        --baratheon_fg: black;
+        --lannister_bg: rgb(191, 14, 14);
+        --lannister_fg: black;
+        --targaryen_bg: black;
+        --targaryen_fg: white;
+        --martell_bg: orange;
+        --martell_fg: black;;
+        --tyrell_bg: green;
+        --tyrell_fg: black;
+        --thenightswatch_bg: grey;
+        --thenightswatch_fg: white;
+        --greyjoy_bg: rgb(60, 50, 200);
+        --greyjoy_fg: white;
+        --startk_bg: white;
+        --startk_fg: black;
+        --neutral_bg: rgb(95, 56, 5);
+        --neutral_fg: white;
+    }
+
+    .baratheon {
+        all: revert;
+        background-color: var(--baratheon_bg);
+        color: var(--baratheon_fg); 
+    }
+
+    .lannister {
+        background-color: var(--lannister_bg);
+        color: var(--lannister_fg);
+    }
+
+    .targaryen {
+        background-color: var(--targaryen_bg);
+        color: var(--targaryen_fg);
+    }
+
+    .martell {
+        background-color: var(--martell_bg);
+        color: var(--martell_fg);
+    }
+
+    .tyrell {
+        background-color: var(--tyrell_bg);
+        color: var(--tyrell_fg);
+    }
+
+    .thenightswatch {
+        background-color: var(--thenightswatch_bg);
+        color: var(--thenightswatch_fg);
+    }
+
+    .greyjoy {
+        background-color: var(--greyjoy_bg);
+        color: var(--greyjoy_fg);
+    }
+
+    .stark {
+        background-color: var(--startk_bg);
+        color: var(--startk_fg);
+    }
+
+    .neutral {
+        background-color: var(--neutral_bg);
+        color: var(--neutral_fg); 
+    }  
+
+    .cardtext-baratheon {
+        font-family:Verdana;
+        border-left:4px solid var(--baratheon_bg);
+    }
+ 
+    .cardtext-lannister {
+        font-family:Verdana;
+        border-left:4px solid var(--lannister_bg);
+    }
+ 
+    .cardtext-targaryen {
+        font-family:Verdana;
+        border-left:4px solid var(--targaryen_bg);
+    } 
+
+    .cardtext-martell {
+        font-family:Verdana;
+        border-left:4px solid var(--martell_bg);
+    } 
+    .cardtext-tyrell {
+        font-family:Verdana;
+        border-left:4px solid var(--tyrell_bg);
+    } 
+    .cardtext-thenightswatch {
+        font-family:Verdana;
+        border-left:4px solid var(--thenightswatch_bg);
+    } 
+    .cardtext-greyjoy {
+        font-family:Verdana;
+        border-left:4px solid var(--greyjoy_bg);
+    } 
+    .cardtext-stark {
+        font-family:Verdana;
+        border-left:4px solid var(--startk_bg);
+    } 
+    .cardtext-neutral {
+        font-family:Verdana;
+        border-left:4px solid var(--neutral_bg);
+    } 
+
+</style>
+
+<div class="row container-fluid">
+    <div class="border col px-0 bg-light" >
+            <!-- <div class="contianer-fluid px-2 cardtitle" style="--faction_color_bg: var({{card.getColorBg}}); --faction_color_fg({{card.getColorFg}})"> -->
+        <div class="container-fluid px-2 {{card.faction}}"> 
+            <h2>{{ card.getName_es }} <span class="cardcode" id="code">[{{ card.code }}]</span></h2>
+        </div>
+        <div class="px-3 my-0 py-0">
+            <p class="my-0">{{ card.getFaction_es }}. {{ card.getLoyal_es }}.</p>
+            {% if card.isCharacter %}
+                <p class="my-0"><b>{{ card.getType_es }}.</b> <span class="stats">Cost: {{ card.cost }}. STR: {{ card.strenght }}. {{ card.getIcons }}</span></p>
+            {% endif %}
+            {% if card.isPlot %}
+                <p class="my-0"><b>{{ card.getType_es }}.</b> <span class="stats">Income: {{ card.pIncome }}. Initiative: {{ card.pInitiative }}.  Claim: {{ card.pClaim }}. Reserve: {{ card.pReserve }}. Plot deck limit: {{card.decklimit}}</span></p>
+            {% endif %}
+            {% if card.isLocation %}
+                <p class="my-0"><b>{{ card.getType_es }}.</b> <span class="stats"></span>Cost: {{ card.cost }}.</span></p>
+            {% endif %}
+            {% if card.isAttachment %}
+            {% endif %}            
+            {% if card.isEvent %}
+            {% endif %}            
+            <div class="px-0 my-0 py-0">
+                <p class="my-0"><b><i>{{ card.getTraits_es }}</i></b></p>
+            </div>
+            {% if card.text %}
+                <div class="px-3 my-0 py-0 cardtext-{{card.faction}}">
+                    <p class="my-0">{{ card.getText_es|safe }}</p>
+                </div>   
+            {% endif %}
+            {% if card.flavor %}
+                <div class="blockquote text-center font-italic" >
+                    <p></p>
+                    <p class="my-0 flavor"><small>{{ card.getFlavor_es|safe }}</small></p>
+                </div>   
+            {% endif %}
+            <div class="px-0 my-0 py-0">
+                <p class="my-0">{{ card.illustrator|safe }}</p>
+            </div>
+            <div class="px-0 my-0 py-0">
+                <p class="my-0">{{ card.getPack_es|safe }}</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col">
+        <img src="images/sample.svg" class="card-img-top" alt="...">
+    </div>
+</div>
+
+<!-- {% endblock %} --> 
