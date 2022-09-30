@@ -8,6 +8,26 @@ register = template.Library()
 # Serializers
 from rest_framework import serializers
 
+def textIcons(text):
+
+    text = text.replace("[military]", '<span class="icon-military"></span>')
+    text = text.replace("[intrigue]", '<span class="icon-intrigue"></span>')
+    text = text.replace("[power]", '<span class="icon-power"></span>')
+
+    text = text.replace("[baratheon]", '<span class="icon-baratheon"></span>')
+    text = text.replace("[lannister]", '<span class="icon-lannister"></span>')
+    text = text.replace("[targaryen]", '<span class="icon-targaryen"></span>')
+    text = text.replace("[martell]", '<span class="icon-martell"></span>')
+    text = text.replace("[tyrell]", '<span class="icon-tyrell"></span>')
+    text = text.replace("[thenightswatch]", '<span class="icon-thenightswatch"></span>')
+    text = text.replace("[stark]", '<span class="icon-stark"></span>')
+    text = text.replace("[greyjoy]", '<span class="icon-greyjoy"></span>')
+    text = text.replace("[neutral]", '<span class="icon-neutral"></span>')
+
+
+    return text
+
+
 # Translation for Type
 def type_es(name):
     match name:
@@ -153,6 +173,25 @@ class Card(models.Model):
         else:
             return False
 
+    def isAttachment(self):
+        if self.type.name == "Attachment":
+            return True
+        else:
+            return False
+
+    def isEvent(self):
+        if self.type.name == "Event":
+            return True
+        else:
+            return False
+
+    def isAgenda(self):
+        if self.type.name == "Agenda":
+            return True
+        else:
+            return False
+
+
     def getTraits_es(self):
         lg = Language.objects.all().get(short='es')
         
@@ -229,7 +268,10 @@ class Card(models.Model):
         if 'translation' in locals():
             text = translation.text
         else:
-            text = self.name + '*'
+            text = self.text
+
+        # Replace keywords by icons
+        text = textIcons(text)
 
         return text
 
@@ -243,7 +285,7 @@ class Card(models.Model):
         if 'translation' in locals():
             flavor = translation.flavor
         else:
-            flavor = self.name + '*'
+            flavor = self.flavor
 
         return flavor 
     
@@ -259,7 +301,7 @@ class Card(models.Model):
         else:
             pack = self.pack.name
 
-        return pack + "#" + str(int(self.code[2:]))
+        return pack + " #" + str(int(self.code[2:]))
 
     @register.simple_tag
     def theName(card, lang):

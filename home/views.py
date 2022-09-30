@@ -19,6 +19,6 @@ def all_cards(request):
 
 def card(request, code):
     card = models.Card.objects.all().get(code=code)
-    return render(request, 'home/card.html', {'card': card})
+    return render(request, 'home/single_card.html', {'card': card})
 
 

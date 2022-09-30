@@ -106,28 +106,189 @@
         border-left:4px solid var(--neutral_bg);
     } 
 
+    .flavor {
+    font-size: medium;
+    font-family: cursive;
+    color:rgb(112, 111, 111)
+    }
+
+    .stats {
+        font-family:'Courier New', Courier, monospace;
+    }
+
+    .cardcode {
+        font-size: small;
+        font-family:'Courier New', Courier, monospace;
+        text-align: right;
+        vertical-align: middle;
+    }   
+    
+    @font-face {
+        font-family: 'thronesdb';
+        src:url('../../static/font/thronesdb.eot?irjt2b');
+        src:url('../../static/font/thronesdb.eot?#iefixirjt2b') format('embedded-opentype'),
+            url('../../static/font/thronesdb.ttf?irjt2b') format('truetype'),
+            url('../../static/font/thronesdb.woff?irjt2b') format('woff'),
+            url('../../static/font/thronesdb.svg?irjt2b#thronesdb') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    [class^="icon-"], [class*=" icon-"] {
+        font-family: 'thronesdb';
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        font-size: 0.9em;
+        text-transform: none;
+        line-height: 1;
+
+        /* Better Font Rendering =========== */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .icon-baratheon:before {
+	    content: "\e600";
+        color: var(--baratheon_bg)
+    }
+    .icon-greyjoy:before {
+        content: "\e601";
+        color: var(--greyjoy_bg)
+    }
+    .icon-intrigue:before {
+        content: "\e602";
+        color: green
+    }
+    .icon-lannister:before {
+        content: "\e603";
+        color: var(--lannister_bg)
+    }
+    .icon-martell:before {
+        content: "\e604";
+        color: var(--martell_bg)
+    }
+    .icon-military:before {
+        content: "\e605";
+        color: red
+    }
+    .icon-thenightswatch:before {
+        content: "\e606";
+        color: var(--thenightswatch_bg)
+    }
+    .icon-power:before {
+        content: "\e607";
+        color:blue
+    }
+    .icon-stark:before {
+        content: "\e608";
+        color: var(--startk_fg)
+    }
+    .icon-targaryen:before {
+        content: "\e609";
+        color: var(--targaryen_bg)
+    }
+    .icon-tyrell:before {
+        content: "\e60a";
+        color: var(--tyrell_bg)
+    }
+    .icon-unique:before {
+        content: "\e60b";
+        font-size: 0.7em;
+        vertical-align: 30%;
+    }
+    .icon-plot:before {
+        content: "\e60c";
+    }
+    .icon-location:before {
+        content: "\e60e";
+    }
+    .icon-character:before {
+        content: "\e60f";
+    }
+    .icon-event:before {
+        content: "\e610";
+    }
+    .icon-agenda:before {
+        content: "\e611";
+    }
+    .icon-attachment:before {
+        content: "\e60d";
+    }
+    .icon-neutral:before {
+        content: "\e612";
+        color: var(--neutral_bg)
+    }    
+
 </style>
 
 <div class="row container-fluid">
     <div class="border col px-0 bg-light" >
         <div class="container-fluid px-2 {{card.faction}}"> 
-            <h2>{{ card.getName_es }} <span class="cardcode" id="code">[{{ card.code }}]</span></h2>
+            <h2>
+                {% if card.unique %}
+                <span class="icon-unique"></span>
+                {% endif %}
+                {{ card.getName_es }} 
+                <span class="cardcode" id="code">[{{ card.code }}]</span>
+            </h2>
         </div>
         <div class="px-3 my-0 py-0">
-            <p class="my-0">{{ card.getFaction_es }}. {{ card.getLoyal_es }}.</p>
+            <p class="my-0">
+                <span class="icon-{{card.faction}}"></span>
+                {{ card.getFaction_es }}. {{ card.getLoyal_es }}.
+            </p>
             {% if card.isCharacter %}
-                <p class="my-0"><b>{{ card.getType_es }}.</b> <span class="stats">Cost: {{ card.cost }}. STR: {{ card.strenght }}. {{ card.getIcons }}</span></p>
+                <p class="my-0">
+                    <b>{{ card.getType_es }} </b> 
+                    <span class="icon-character"></span>  
+                    <span class="stats">Cost: {{ card.cost }}. STR: {{ card.strenght }}. {{ card.getIcons }}</span>
+                    {% if card.iMilitary %}
+                        <span class="icon-military"></span>
+                    {% endif %}
+                    {% if card.iIntrigue %}
+                        <span class="icon-intrigue"></span>
+                    {% endif %}
+                    {% if card.iPower %}
+                        <span class="icon-power"></span>
+                    {% endif %}
+                </p>
             {% endif %}
             {% if card.isPlot %}
-                <p class="my-0"><b>{{ card.getType_es }}.</b> <span class="stats">Income: {{ card.pIncome }}. Initiative: {{ card.pInitiative }}.  Claim: {{ card.pClaim }}. Reserve: {{ card.pReserve }}. Plot deck limit: {{card.decklimit}}</span></p>
+                <p class="my-0">
+                    <b>{{ card.getType_es }} </b> 
+                    <span class="icon-plot"></span>  
+                    <span class="stats">Income: {{ card.pIncome }}. Initiative: {{ card.pInitiative }}.  Claim: {{ card.pClaim }}. Reserve: {{ card.pReserve }}. Plot deck limit: {{card.decklimit}}</span>
+                </p>
             {% endif %}
             {% if card.isLocation %}
-                <p class="my-0"><b>{{ card.getType_es }}.</b> <span class="stats"></span>Cost: {{ card.cost }}.</span></p>
+                <p class="my-0">
+                    <b>{{ card.getType_es }} </b> 
+                    <span class="icon-location"></span>  
+                    <span class="stats"></span>Cost: {{ card.cost }}.</span>
+                </p>
             {% endif %}
             {% if card.isAttachment %}
+                <p class="my-0">
+                    <b>{{ card.getType_es }} </b> 
+                    <span class="icon-attachment"></span>  
+                    <span class="stats"></span>Cost: {{ card.cost }}.</span>
+                </p>
             {% endif %}            
             {% if card.isEvent %}
-            {% endif %}            
+                <p class="my-0">
+                    <b>{{ card.getType_es }} </b> 
+                    <span class="icon-event"></span>  
+                    <span class="stats"></span>Cost: {{ card.cost }}.</span>
+                </p>
+            {% endif %}  
+            {% if card.isAgenda %}
+                <p class="my-0">
+                    <b>{{ card.getType_es }} </b> 
+                    <span class="icon-agenda"></span>
+                </p>
+            {% endif %}                      
             <div class="px-0 my-0 py-0">
                 <p class="my-0"><b><i>{{ card.getTraits_es }}</i></b></p>
             </div>
@@ -137,13 +298,18 @@
                 </div>   
             {% endif %}
             {% if card.flavor %}
-                <div class="blockquote text-center font-italic" >
+                <div class="blockquote text-center font-italic flavor" >
                     <p></p>
-                    <p class="my-0 flavor"><small>{{ card.getFlavor_es|safe }}</small></p>
+                    <p class="my-0"><small>{{ card.getFlavor_es|safe }}</small></p>
                 </div>   
             {% endif %}
             <div class="px-0 my-0 py-0">
-                <p class="my-0">{{ card.illustrator|safe }}</p>
+                {% if card.illustrator %}
+                    <p class="my-0">
+                        <i class="fa-solid fa-paintbrush"></i>
+                        {{ card.illustrator|safe }}
+                    </p>
+                {% endif %}
             </div>
             <div class="px-0 my-0 py-0">
                 <p class="my-0">{{ card.getPack_es|safe }}</p>
