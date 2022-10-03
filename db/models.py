@@ -58,6 +58,8 @@ class Pack(models.Model):
     short = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=100, unique=True)
     cycle = models.ForeignKey(Cycle, on_delete=models.CASCADE)
+    cdbId = models.PositiveIntegerField(blank=True, null=True)
+    releaseDate = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.short
@@ -302,6 +304,15 @@ class Card(models.Model):
             pack = self.pack.name
 
         return pack + " #" + str(int(self.code[2:]))
+
+    def getImage(self):
+
+        mainNum = self.pack.cdbId
+        secondNum = int(self.code[2:])
+           
+        url = "../../static/images/GT" + str(mainNum).zfill(2) + "_" + str(secondNum) + ".jpg" 
+        
+        return url
 
     @register.simple_tag
     def theName(card, lang):

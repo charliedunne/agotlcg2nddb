@@ -124,7 +124,9 @@ for filename in dirs:
     if row is not None:
         temp = models.Pack(short=data_pack['code'], 
                             name=data_pack['name'], 
-                            cycle=row)
+                            cycle=row,
+                            cdbId=data_pack['cgdbId'],
+                            releaseDate=data_pack['releaseDate'])
         try:
             temp.save()            
             print('Saving "' + temp.name + '" (' + temp.short + ') for cycle "' + row.name + '".')
