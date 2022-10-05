@@ -67,41 +67,6 @@ for i in data_cycles:
 
     counter = counter + 1
 
-# Cycles translation
-print("\nRunning CyclesTranslation:")
-print("..................................\n")
-path = "../translations-json-data/translations/"
-dirs = os.listdir(path)
-
-# Manage each language translation
-for lang in dirs:
-    f = open(path + lang + '/cycles.json')
-    translate_cycle_data = json.load(f)
-
-    for i in translate_cycle_data:
-
-        # Find the cycle in DB
-        row = models.Cycle.objects.all().get(short=i['code'])
-
-        # Find Language in DB
-        lg = models.Language.objects.all().get(short=lang)
-        
-        if (row is not None) and (lg is not None):
-            temp = models.TranslateCycle(cycle=row, language=lg, name=i['name'])
-
-            # Find duplicates
-            duplicates = models.TranslateCycle.objects.all().filter(cycle=row, language=lg, name=i['name'])
-
-            if len(duplicates) == 0:
-                try:
-                    temp.save()
-                    print('Saving "' + i['name'] + '" Cycle')
-                except Exception as e:
-                    if 'UNIQUE' in str(e):
-                        pass
-                    else:          
-                        print('Bypass "'  + i['name'] + '". ERROR: ' + str(e))                
-
 # Packs
 print("\nRunning packs")
 print("..................................\n")
@@ -135,42 +100,6 @@ for filename in dirs:
                 pass
             else:              
                 print('Bypassing "' + temp.name + '" (' + temp.short + ') for cycle "' + row.name + '". ERROR: ', str(e))
-
-# Packs translation
-print("\nRunning PacksTranslation:")
-print("..................................\n")
-path = "../translations-json-data/translations/"
-dirs = os.listdir(path)
-
-# Manage each language translation
-for lang in dirs:
-    f = open(path + lang + '/packs.json')
-    translate_cycle_data = json.load(f)
-
-    for i in translate_cycle_data:
-
-        # Find the cycle in DB
-        row = models.Pack.objects.all().get(short=i['code'])
-
-        # Find Language in DB
-        lg = models.Language.objects.all().get(short=lang)
-        
-        if (row is not None) and (lg is not None):
-            temp = models.TranslatePack(pack=row, language=lg, name=i['name'])
-
-            # Find duplicates
-            duplicates = models.TranslatePack.objects.all().filter(pack=row, language=lg, name=i['name'])
-
-            if len(duplicates) == 0:
-                try:
-                    temp.save()
-                    print('Saving "' + i['name'] + '" Pack')
-                except Exception as e:
-                    if 'UNIQUE' in str(e):
-                        pass
-                    else:          
-                        print('Bypass "'  + i['name'] + '". ERROR: ' + str(e))  
-
 
 # Factions
 print("\nRunning factions")
@@ -207,42 +136,6 @@ for faction in factions:
             pass
         else:        
             print('Bypassing "' + temp.name + '" (' + temp.short + '). ERROR: ' + str(e))
-
-
-# Faction translation
-print("\nRunning FactionTranslation:")
-print("..................................\n")
-path = "../translations-json-data/translations/"
-dirs = os.listdir(path)
-
-# Manage each language translation
-for lang in dirs:
-    f = open(path + lang + '/factions.json')
-    translate_cycle_data = json.load(f)
-
-    for i in translate_cycle_data:
-
-        # Find the cycle in DB
-        row = models.Faction.objects.all().get(short=i['code'])
-
-        # Find Language in DB
-        lg = models.Language.objects.all().get(short=lang)
-        
-        if (row is not None) and (lg is not None):
-            temp = models.TranslateFaction(faction=row, language=lg, name=i['name'])
-
-            # Find duplicates
-            duplicates = models.TranslateFaction.objects.all().filter(faction=row, language=lg, name=i['name'])
-
-            if len(duplicates) == 0:            
-                try:
-                    temp.save()
-                    print('Saving "' + i['name'] + '" faction')
-                except Exception as e:
-                    if 'UNIQUE' in str(e):
-                        pass
-                    else:          
-                        print('Bypass "'  + i['name'] + '". ERROR: ' + str(e))  
 
 # Traits
 print("\nRunning traits")
@@ -385,7 +278,114 @@ for filename in dirs:
             else:
                 print('ERROR [' + temp.code + "]'" + temp.name + '". ' + str(e))
 
- 
+
+# Cycles translation
+print("\nRunning CyclesTranslation:")
+print("..................................\n")
+path = "../translations-json-data/translations/"
+dirs = os.listdir(path)
+
+# Manage each language translation
+#for lang in dirs:
+for lang in ['es']:    
+    f = open(path + lang + '/cycles.json')
+    translate_cycle_data = json.load(f)
+
+    for i in translate_cycle_data:
+
+        # Find the cycle in DB
+        row = models.Cycle.objects.all().get(short=i['code'])
+
+        # Find Language in DB
+        lg = models.Language.objects.all().get(short=lang)
+        
+        if (row is not None) and (lg is not None):
+            temp = models.TranslateCycle(cycle=row, language=lg, name=i['name'])
+
+            # Find duplicates
+            duplicates = models.TranslateCycle.objects.all().filter(cycle=row, language=lg, name=i['name'])
+
+            if len(duplicates) == 0:
+                try:
+                    temp.save()
+                    print('Saving "' + i['name'] + '" Cycle')
+                except Exception as e:
+                    if 'UNIQUE' in str(e):
+                        pass
+                    else:          
+                        print('Bypass "'  + i['name'] + '". ERROR: ' + str(e))                
+
+# Packs translation
+print("\nRunning PacksTranslation:")
+print("..................................\n")
+path = "../translations-json-data/translations/"
+dirs = os.listdir(path)
+
+# Manage each language translation
+#for lang in dirs:
+for lang in ['es']:    
+    f = open(path + lang + '/packs.json')
+    translate_cycle_data = json.load(f)
+
+    for i in translate_cycle_data:
+
+        # Find the cycle in DB
+        row = models.Pack.objects.all().get(short=i['code'])
+
+        # Find Language in DB
+        lg = models.Language.objects.all().get(short=lang)
+        
+        if (row is not None) and (lg is not None):
+            temp = models.TranslatePack(pack=row, language=lg, name=i['name'])
+
+            # Find duplicates
+            duplicates = models.TranslatePack.objects.all().filter(pack=row, language=lg, name=i['name'])
+
+            if len(duplicates) == 0:
+                try:
+                    temp.save()
+                    print('Saving "' + i['name'] + '" Pack')
+                except Exception as e:
+                    if 'UNIQUE' in str(e):
+                        pass
+                    else:          
+                        print('Bypass "'  + i['name'] + '". ERROR: ' + str(e))  
+
+# Faction translation
+print("\nRunning FactionTranslation:")
+print("..................................\n")
+path = "../translations-json-data/translations/"
+dirs = os.listdir(path)
+
+# Manage each language translation
+#for lang in dirs:
+for lang in ['es']:
+    f = open(path + lang + '/factions.json')
+    translate_cycle_data = json.load(f)
+
+    for i in translate_cycle_data:
+
+        # Find the cycle in DB
+        row = models.Faction.objects.all().get(short=i['code'])
+
+        # Find Language in DB
+        lg = models.Language.objects.all().get(short=lang)
+        
+        if (row is not None) and (lg is not None):
+            temp = models.TranslateFaction(faction=row, language=lg, name=i['name'])
+
+            # Find duplicates
+            duplicates = models.TranslateFaction.objects.all().filter(faction=row, language=lg, name=i['name'])
+
+            if len(duplicates) == 0:            
+                try:
+                    temp.save()
+                    print('Saving "' + i['name'] + '" faction')
+                except Exception as e:
+                    if 'UNIQUE' in str(e):
+                        pass
+                    else:          
+                        print('Bypass "'  + i['name'] + '". ERROR: ' + str(e))  
 
 # Traits translation
 print("\nRunning TraitsTranslation:")
@@ -394,47 +394,30 @@ path = "../translations-json-data/translations/"
 dirs = os.listdir(path)
 
 # Manage each language translation
-for lang in dirs:
-#for lang in ['es']:
-    dirPacks = os.listdir(path + lang + '/pack/')
+#for lang in dirs:
+for lang in ['es']:
+    traitsFile = open(path + lang + '/traits.json')
+    jTraits = json.load(traitsFile)
 
     # Find Language in DB
     lg = models.Language.objects.all().get(short=lang)
 
-    for pack in dirPacks:
-        f = open(path + lang + '/pack/' + pack)
-        translate_pack_data = json.load(f)
+    for jTrait in jTraits:
 
-        for i in translate_pack_data:
-            
-            # Extract the traits from the translation
-            traits = list(filter(None, i['traits'].split('.')))
-           
-            # Find the same traits in DB
-            orTraits = models.Card.objects.get(code=i['code']).traits.all()
+        # Find Trait row
+        row = models.Trait.objects.get(name=jTrait["code"])
 
-            if (len(orTraits) == 1) and (i['traits'] != ""):
-                # print(pack + ". => " + traits[0].lstrip() + "=> " + orTraits[0].name)
+        # Row to be inserted in DB (if no duplicates already)
+        temp = models.TranslateTrait(trait=row, language=lg, name=jTrait["name"])
 
-                # Trait object (many2many relationship)
-                row = models.Trait.objects.get(name=orTraits[0].name)
-
-                # Row to be inserted in DB (if no duplicates already)
-                temp = models.TranslateTrait(trait=row, language=lg, name=traits[0].lstrip())
-
-                # Find duplicates
-                duplicates = models.TranslateTrait.objects.all().filter(trait=row, language=lg, name=traits[0].lstrip())
-
-                if len(duplicates) == 0:
-                    try:
-                        temp.save()
-                        print('Saving "' + orTraits[0].name + '" => "' +  traits[0].lstrip() + '" Trait')
-                    except Exception as e:
-                        if 'UNIQUE' in str(e):
-                            pass
-                        else:          
-                            print('Bypass "'  + orTraits[0].name + '" => "' +   traits[0].lstrip() + '". ERROR: ' + str(e))  
-
+        try:
+            temp.save()
+            print('Saving "' + jTrait["code"] + '" => "' +  jTrait["name"] + '" Trait')
+        except Exception as e:
+            if 'UNIQUE' in str(e):
+                pass
+            else:          
+                print('Bypass "'  + jTrait["code"] + '" => "' +   jTrait["name"] + '". ERROR: ' + str(e))  
 
 # Cards translation
 print("\nRunning CardsTranslation:")
@@ -443,8 +426,8 @@ path = "../translations-json-data/translations/"
 dirs = os.listdir(path)
 
 # Manage each language translation
-for lang in dirs:
-#for lang in ['es']:
+#for lang in dirs:
+for lang in ['es']:
     dirPacks = os.listdir(path + lang + '/pack/')
 
     # Find Language in DB

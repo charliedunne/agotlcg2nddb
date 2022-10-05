@@ -318,6 +318,10 @@
     </div>
 
     <div class="col">
-        <img src="{{ card.getImage }}" class="img-fluid" alt="Not-available">
+        {% if card.isPlot %}
+            <img src="{{ card.getImage }}" class="rounded img-responsive" alt="Not-available" height="310">
+        {% else %}
+            <img src="{{ card.getImage }}" class="rounded img-responsive" alt="Not-available" width="310">
+        {% endif %}
     </div>
 </div>
