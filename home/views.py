@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Django views
 from django.views.generic import TemplateView, DetailView
+from django.views.generic import ListView
 
 from db import models
 
@@ -13,12 +14,13 @@ from db.models import Card
 # Create your views here.
 
 def all_cards(request):
-    card_list = models.Card.objects.all()
-    return render(request, 'home/home.html', {'card_list': card_list})
+    pack = models.Pack.objects.all().get(short='FotS')
+    card_list = models.Card.objects.all().filter(pack=pack).order_by("code")
+    num_cards = len(card_list)
+    return render(request, 'home/home.html', {'card_list': card_list, 'card_num': num_cards})
 
 
 def card(request, code):
     card = models.Card.objects.all().get(code=code)
     return render(request, 'home/single_card.html', {'card': card})
-
 

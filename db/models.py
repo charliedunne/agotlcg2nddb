@@ -23,7 +23,21 @@ def textIcons(text):
     text = text.replace("[stark]", '<span class="icon-stark"></span>')
     text = text.replace("[greyjoy]", '<span class="icon-greyjoy"></span>')
     text = text.replace("[neutral]", '<span class="icon-neutral"></span>')
+    text = text.replace("<i>", "<i><b>")
+    text = text.replace("</i>", "</i></b>")
 
+
+    return text
+
+def textBrs(text):
+
+    text = text.replace("\n", '<br>')
+
+    return text    
+
+def textCite(text):
+
+    text = text.replace("<cite>", "<br><cite>- ")
 
     return text
 
@@ -274,6 +288,7 @@ class Card(models.Model):
 
         # Replace keywords by icons
         text = textIcons(text)
+        text = textBrs(text)
 
         return text
 
@@ -288,6 +303,8 @@ class Card(models.Model):
             flavor = translation.flavor
         else:
             flavor = self.flavor
+
+        flavor = textCite(flavor)
 
         return flavor 
     

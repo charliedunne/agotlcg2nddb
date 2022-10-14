@@ -243,7 +243,7 @@
                 <p class="my-0">
                     <b>{{ card.getType_es }} </b> 
                     <span class="icon-character"></span>  
-                    <span class="stats">Cost: {{ card.cost }}. STR: {{ card.strenght }}. {{ card.getIcons }}</span>
+                    <span class="stats">Coste: {{ card.cost }}. FUE: {{ card.strenght }}. {{ card.getIcons }}</span>
                     {% if card.iMilitary %}
                         <span class="icon-military"></span>
                     {% endif %}
@@ -266,21 +266,21 @@
                 <p class="my-0">
                     <b>{{ card.getType_es }} </b> 
                     <span class="icon-location"></span>  
-                    <span class="stats"></span>Cost: {{ card.cost }}.</span>
+                    <span class="stats"></span>Coste: {{ card.cost }}.</span>
                 </p>
             {% endif %}
             {% if card.isAttachment %}
                 <p class="my-0">
                     <b>{{ card.getType_es }} </b> 
                     <span class="icon-attachment"></span>  
-                    <span class="stats"></span>Cost: {{ card.cost }}.</span>
+                    <span class="stats"></span>Coste: {{ card.cost }}.</span>
                 </p>
             {% endif %}            
             {% if card.isEvent %}
                 <p class="my-0">
                     <b>{{ card.getType_es }} </b> 
                     <span class="icon-event"></span>  
-                    <span class="stats"></span>Cost: {{ card.cost }}.</span>
+                    <span class="stats"></span>Coste: {{ card.cost }}.</span>
                 </p>
             {% endif %}  
             {% if card.isAgenda %}
@@ -293,7 +293,7 @@
                 <p class="my-0"><b><i>{{ card.getTraits_es }}</i></b></p>
             </div>
             {% if card.text %}
-                <div class="px-3 my-0 py-0 cardtext-{{card.faction}}">
+                <div class="px-3 cardtext-{{card.faction}}">
                     <p class="my-0">{{ card.getText_es|safe }}</p>
                 </div>   
             {% endif %}
@@ -303,6 +303,7 @@
                     <p class="my-0"><small>{{ card.getFlavor_es|safe }}</small></p>
                 </div>   
             {% endif %}
+            <br>
             <div class="px-0 my-0 py-0">
                 {% if card.illustrator %}
                     <p class="my-0">
