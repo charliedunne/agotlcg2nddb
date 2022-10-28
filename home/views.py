@@ -9,7 +9,10 @@ from db import models
 # Time tools
 from datetime import datetime
 
-from db.models import Card
+from db.models import Card, Pack
+
+# Q Objects
+from django.db.models import Q
 
 # Create your views here.
 
@@ -23,4 +26,14 @@ def all_cards(request):
 def card(request, code):
     card = models.Card.objects.all().get(code=code)
     return render(request, 'home/single_card.html', {'card': card})
+
+class SearchResultsView(ListView):
+    model = Card
+    template_name = 'home/home.html'
+
+    def get_queryset(self):
+        
+        fFaction = models.Faction.objects.all().get(short='lannister')
+        fType = models.Type.objects.all().get(name='Plot')
+        return Card.objects.filter(Q(faction=fFaction) & Q(type=fType))
 
